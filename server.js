@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const { notFound, errorHandler } = require("./middleware/error");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -11,6 +13,11 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Intern Management System API is running" });
 });
+
+app.use("/api/auth", authRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
