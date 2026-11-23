@@ -49,7 +49,7 @@ const getMyTasks = async (req, res) => {
   res.json(tasks);
 };
 
-// PUT /api/tasks/:id - Admin edits any field; an intern can only change the status of their own task
+// PUT /api/tasks/:id - Admin edits any field; an intern can only move their own task to "In Progress"
 const updateTask = async (req, res) => {
   const task = await Task.findById(req.params.id);
   if (!task) return res.status(404).json({ message: "Task not found" });
@@ -62,6 +62,13 @@ const updateTask = async (req, res) => {
     }
     if (Object.keys(data).some((f) => f !== "status")) {
       return res.status(403).json({ message: "Interns can only update the status" });
+    }
+    // Only the admin marks a task "Completed", after reviewing the submission
+    if (data.status !== "In Progress") {
+      return res.status(403).json({ message: 'Interns can only set the status to "In Progress"' });
+    }
+    if (task.status === "Completed") {
+      return res.status(403).json({ message: "This task is already completed" });
     }
   } else if (data.assignedTo && !(await isActiveIntern(data.assignedTo))) {
     return res.status(400).json({ message: "assignedTo must be an active intern" });
