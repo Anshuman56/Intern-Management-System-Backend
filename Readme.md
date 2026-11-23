@@ -34,4 +34,7 @@ Built with Node.js, Express 5, MongoDB (Mongoose) and JWT auth.
 - **Deleting an intern also deletes their tasks and submissions**, and deleting a task deletes its submissions,
   so no record points to something that no longer exists. To keep an intern's history, deactivate them instead
   (`isActive: false`): they can no longer log in, and their existing token stops working.
+- **One stats route for both roles.** `GET /api/dashboard/stats` returns system-wide numbers for the admin
+  and only the logged-in intern's own numbers for an intern, so the frontend calls the same URL for both dashboards.
+  A task counts as overdue when its deadline has passed and it is not "Completed".
 - **Passwords** are hashed with bcrypt in a pre-save hook and are never returned by the API (`select: false`).
