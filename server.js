@@ -6,6 +6,7 @@ const { notFound, errorHandler } = require("./middleware/error");
 const authRoutes = require("./routes/authRoutes");
 const internRoutes = require("./routes/internRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/interns", internRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
